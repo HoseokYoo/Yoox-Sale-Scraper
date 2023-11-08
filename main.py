@@ -11,7 +11,7 @@ session = HTMLSession()
 
 def find_items():
     # Clears listing text file if it exists
-    file_to_delete = open("items.txt", "w")
+    file_to_delete = open("items.txt", "w", encoding="utf8")
     file_to_delete.close()
 
     found_item_count = 0
@@ -21,7 +21,8 @@ def find_items():
         print(str(datetime.datetime.now()), "-", f"Searching {brand_name} items")
 
         for page_number in range(1, 100):
-            url = f"https://www.yoox.com/us/men/shoponline/{brand_name}_md/{page_number}#/d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
+            # url = f"https://www.yoox.com/kr/남성/shoponline/{brand_name}_md/{page_number}#/d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
+            url = f"https://www.yoox.com/kr/남성/shoponline/코트%20&%20자켓_mc/?d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
 
             response = session.get(url, timeout=60)
 
@@ -66,7 +67,7 @@ def find_items():
     # Sort all items found from lowest price to highest price. Then we output onto text file
     all_found_items.sort()
     for item in all_found_items:
-        with open("items.txt", "a") as f:
+        with open("items.txt", "a", encoding="utf8") as f:
             f.write(f"Brand:       {item[1]} \n")
             f.write(f"Item Type:   {item[2]} \n")
             f.write(f"Sale:        {item[3]} \n")
@@ -81,18 +82,18 @@ def get_file_differences(file1, file2) -> bool:
     Get lines in file2 that are not in file1 as opposed to overall differences between the two txt files
     '''
 
-    with open(file1, 'r') as f1, open(file2, 'r') as f2:
+    with open(file1, 'r', encoding="utf8") as f1, open(file2, 'r', encoding="utf8") as f2:
         lines1 = f1.readlines()
         lines2 = f2.readlines()
 
     diff = difflib.ndiff(lines1, lines2)
     diff_lines = [line for line in diff if line.startswith('+ ')]
     if len(diff_lines) > 0:
-        with open("new_sales.txt", "w") as f:
+        with open("new_sales.txt", "w", encoding="utf8") as f:
             f.write(str(datetime.datetime.now()) + f"\n")
             for line in diff_lines:
                 f.write(line)
-        shutil.copyfile('new_sales.txt', f"./logs/{str(datetime.datetime.now())}.txt")
+        shutil.copyfile('new_sales.txt', f"./logs/{str(time.time())}.txt")
         return True
     return False
 
@@ -105,7 +106,8 @@ def get_new_sale_items():
     new_sales = get_file_differences(file1, file2)
 
     if new_sales == True:
-        os.system("open new_sales.txt")
+        os.system("notepad.exe new_sales.txt")
+        # 윈도우용
 
     # Update the text file for old_items to our new list of items
     os.remove("old_items.txt")

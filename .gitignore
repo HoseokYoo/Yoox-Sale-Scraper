@@ -162,3 +162,5 @@ cython_debug/
 items.txt 
 old_items.txt
 new_sales.txt
+logs/
+.idea
