@@ -64,7 +64,7 @@ BRAND_NUMBERS = [
 ]
 
 # Sale Percentage Off. 80 means the script will search for items that are 80% off
-DESIRED_DISCOUNT = 65
+DESIRED_DISCOUNT = 60
 
 # How many minutes between each search session. Note the website can time out if there are too many accesses in a short period of time
 MINUTES_BETWEEN_SEARCH = 5

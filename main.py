@@ -16,16 +16,23 @@ def find_items():
 
     found_item_count = 0
     all_found_items = []
-    # category_name = '니트%20&%20스웻셔츠_mc'
-    category_name = '코트%20&%20자켓_mc'
+    category_name = '니트%20&%20스웻셔츠_mc'
+    # category_name = '코트%20&%20자켓_mc'
+    # category_name = '스니커즈_c'
+    # category_name = '주얼리_mc'
+    # attributes = '%7b%27ctgr%27%3a%5b%27gll%27%5d%7d'
+    # attributes = '%7b%27mtrl%27%3a%5b%27lpc%27%5d%7d' # 알파카
+    # attributes = '%7b%27mtrl%27%3a%5b%27cshmr%27%5d%7d' #캐시미어
+    # attributes = '%7b%27ctgr%27%3a%5b%27prk1%27%5d%7d' # 파카
+    # attributes = '%7b%27ctgr%27%3a%5b%27mglncchm%27%5d%7d' # 캐시미어 니트
+    attributes = '%7b%27ctgr%27%3a%5b%27crdgn%27%5d%7d' # 가디건
 
     for brand_name, brand_num in zip(BRAND_NAMES, BRAND_NUMBERS):
         print(str(datetime.datetime.now()), "-", f"Searching {brand_name} items")
 
         for page_number in range(1, 100):
             # url = f"https://www.yoox.com/kr/남성/shoponline/{brand_name}_md/{page_number}#/d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
-            url = f"https://www.yoox.com/kr/남성/shoponline/{category_name}/?d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
-
+            url = f"https://www.yoox.com/kr/남성/shoponline/{category_name}/?d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3&attributes={attributes}"
             response = session.get(url, timeout=60)
 
             # Parse the HTML content of the page
