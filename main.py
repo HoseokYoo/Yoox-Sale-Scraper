@@ -16,13 +16,15 @@ def find_items():
 
     found_item_count = 0
     all_found_items = []
+    # category_name = '니트%20&%20스웻셔츠_mc'
+    category_name = '코트%20&%20자켓_mc'
 
     for brand_name, brand_num in zip(BRAND_NAMES, BRAND_NUMBERS):
         print(str(datetime.datetime.now()), "-", f"Searching {brand_name} items")
 
         for page_number in range(1, 100):
             # url = f"https://www.yoox.com/kr/남성/shoponline/{brand_name}_md/{page_number}#/d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
-            url = f"https://www.yoox.com/kr/남성/shoponline/코트%20&%20자켓_mc/?d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
+            url = f"https://www.yoox.com/kr/남성/shoponline/{category_name}/?d={brand_num}&dept=men&gender=U&page={page_number}&season=X&sort=3"
 
             response = session.get(url, timeout=60)
 
@@ -44,6 +46,7 @@ def find_items():
                 if "SOLD OUT" not in item.find("div", class_="price").text.strip():
                     sale_percentage_element = item.find("span", class_="element")
                     sale_percentage = None
+
                     if sale_percentage_element:
                         sale_percentage = int(sale_percentage_element.text.strip().split("%")[0][1:])
 
@@ -55,6 +58,7 @@ def find_items():
                         old_price = item.find("span", class_="oldprice text-linethrough text-light").text.strip()
                         new_price = item.find( "div", class_="retail-newprice font-bold").text.strip()
                         url = "https://www.yoox.com" + item.find("a", class_="itemlink")["href"]
+                        # image = item.find('img', class_="front").get('src')
 
                         # Want to sort items by price. Turn the current price into an int for sorting
                         sort_value = int(new_price.split(" ")[1].split(".")[0].replace(",",""))
@@ -74,6 +78,7 @@ def find_items():
             f.write(f"Old Price:   {item[4]} \n")
             f.write(f"New Price:   {item[5]} \n")
             f.write(f"URl:         {item[6]} \n\n")
+            # f.write(f"Image:       {item[7]} \n\n")
 
     print(str(datetime.datetime.now()), "-", f"{found_item_count} total items found at {DESIRED_DISCOUNT}% off.")
 
